@@ -14,7 +14,7 @@ const Timer: React.FC<TimerProps> = ({ duration }) => {
 
   // Play/Pause Timer Logic
   useEffect(() => {
-    let timer: number | undefined;
+    let timer: number | NodeJS.Timeout | undefined;
     if (isRunning && timeLeft > 0) {
       timer = setInterval(() => setTimeLeft((prev) => prev - 1), 1000);
     } else if (timeLeft === 0) {
