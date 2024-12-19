@@ -6,6 +6,7 @@ import React, {
   ChangeEvent,
 } from 'react';
 import { IoIosSend } from 'react-icons/io';
+import { getOpenAIResponse } from './OpenAIService';
 
 interface ChatInputBoxProps {
   onSendMessage: (message: string) => void;
@@ -19,6 +20,7 @@ const ChatInputBox: React.FC<ChatInputBoxProps> = ({ onSendMessage }) => {
   const MAX_ROWS = 6; // Maximum rows before scrolling
   const LINE_HEIGHT = 24; // Line height in pixels
   const INITIAL_CONTAINER_HEIGHT = 64; // Initial container height in pixels
+  const [response, setResponse] = useState('');
 
   const adjustHeights = () => {
     if (textareaRef.current && containerRef.current) {
@@ -58,7 +60,7 @@ const ChatInputBox: React.FC<ChatInputBoxProps> = ({ onSendMessage }) => {
     }
   };
 
-  const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
+  const handleKeyDown = async (e: KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter') {
       if (e.shiftKey) {
         // Shift + Enter: Create a new line
@@ -67,22 +69,45 @@ const ChatInputBox: React.FC<ChatInputBoxProps> = ({ onSendMessage }) => {
         // Enter: Send message
         e.preventDefault();
         if (message.trim()) {
-          onSendMessage(message);
+          // Call the backend service to get AI response
+          const aiResponse = await getOpenAIResponse(message);
+
+          console.log('AI Response:', aiResponse);
+
+          // Extract the generated_text from the response
+          if (aiResponse && aiResponse.length > 0 && aiResponse[0].generated_text) {
+            setResponse(aiResponse[0].generated_text);
+          } else {
+            setResponse('Sorry, I could not understand your input.');
+          }
+  
+          onSendMessage(message); // Trigger the callback
           setMessage(''); // Clear input after sending
           resetHeights(); // Reset heights
         }
       }
     }
   };
+  
+  const handleSend = async () => {
+    // Call the backend service to get AI response
+    const aiResponse = await getOpenAIResponse(message);
 
-  const handleSend = () => {
-    if (message.trim()) {
-      onSendMessage(message);
-      setMessage(''); // Clear input after sending
-      resetHeights(); // Reset heights
+    console.log('AI Response:', aiResponse);
+
+    // Extract the generated_text from the response
+    if (aiResponse && aiResponse.length > 0 && aiResponse[0].generated_text) {
+      setResponse(aiResponse[0].generated_text);
+    } else {
+      setResponse('Sorry, I could not understand your input.');
     }
+  
+    onSendMessage(message); // Trigger the callback
+    setMessage(''); // Clear input after sending
+    resetHeights(); // Reset heights
   };
 
+  
   const resetHeights = () => {
     // Reset the height of the textarea and container to their initial values
     if (textareaRef.current && containerRef.current) {
@@ -117,6 +142,9 @@ const ChatInputBox: React.FC<ChatInputBoxProps> = ({ onSendMessage }) => {
       >
         <IoIosSend size={30} />
       </button>
+      <div className="absolute z-20">
+        <h1>{response}</h1>
+    </div>
     </div>
   );
 };
