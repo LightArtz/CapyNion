@@ -1,23 +1,70 @@
-function ChatScrollbar({ response }: { response: string }) {
+import { useEffect, useRef, useState } from 'react';
+
+function ChatScrollbar({
+  userMessage,
+  response,
+}: {
+  userMessage: string;
+  response: string;
+}) {
+  const chatContainerRef = useRef<HTMLDivElement>(null);
+
+  const [conversation, setConversation] = useState([
+    { sender: 'bot', message: 'Hello! How can I assist you today?' },
+  ]);
+  useEffect(() => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop =
+        chatContainerRef.current.scrollHeight;
+    }
+  }, [conversation]); // Run this effect whenever `conversation` updates
+
+  const handleBotResponse = async () => {
+    setConversation((prevConversation) => [
+      ...prevConversation,
+      { sender: 'bot', message: response },
+    ]);
+  };
+
+  const handleUserMessage = async () => {
+    setConversation((prevConversation) => [
+      ...prevConversation,
+      { sender: 'user', message: userMessage },
+    ]);
+  };
+
+  useEffect(() => {
+    handleUserMessage();
+  }, [userMessage]);
+
+  useEffect(() => {
+    handleBotResponse();
+  }, [response]);
+
   return (
-    <div className="my-auto w-full overflow-y-scroll">
-      <div className="relative flex flex-col mx-4 ">
-        <h1>{response}</h1>
-        <div className="absolute -left-4 top-5 w-5 h-5 bg-secondary rounded-full mr-4 z-10"></div>
-        <article className=" mx-auto rounded-lg py-4 ml-4 z-10">
-          Hey there, friend! 🌟 I’m CapyNion, your loyal capybara companion. How
-          are you feeling today? Pick one of the options below, and let’s make
-          today a little brighter together!
-        </article>
-        <button className="bg-container-secondary rounded-xl p-2 my-2 ml-4 max-w-xs text-left">
-          🌈 Explore Stress-Coping Strategies
-        </button>
-        <button className="bg-container-secondary rounded-xl p-2 my-2 ml-4 max-w-xs text-left">
-          💪🏻 Encourage with Motivation
-        </button>
-        <button className="bg-container-secondary rounded-xl p-2 my-2 ml-4 max-w-xs text-left">
-          💬 I Just Want to Chat
-        </button>
+    <div
+      ref={chatContainerRef}
+      className="my-auto w-full h-full overflow-y-scroll p-4"
+    >
+      <div className="flex flex-col space-y-3">
+        {conversation.map((msg, index) => (
+          <div
+            key={index}
+            className={`flex ${
+              msg.sender === 'user' ? 'justify-end' : 'justify-start'
+            }`}
+          >
+            <div
+              className={`rounded-lg p-3 max-w-xs ${
+                msg.sender === 'user'
+                  ? 'bg-blue-500 text-white'
+                  : 'bg-gray-300 text-black'
+              }`}
+            >
+              <span>{msg.message}</span>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );

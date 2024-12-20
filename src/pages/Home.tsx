@@ -8,12 +8,14 @@ import Cloud1 from '../assets/cloud 1.svg';
 import Cloud2 from '../assets/cloud-2.svg';
 import { getOpenAIResponse } from '../components/OpenAIService';
 import { useState } from 'react';
+import { BiSolidCaretUpSquare } from 'react-icons/bi';
 
 function Home() {
   const [response, setResponse] = useState('');
+  const [userMessage, setUserMessage] = useState('');
   const handleMessage = async (message: string) => {
+    setUserMessage(message);
     const aiResponse = await getOpenAIResponse(message);
-
     console.log('AI Response:', aiResponse);
 
     // Extract the generated_text from the response
@@ -24,29 +26,34 @@ function Home() {
     }
   };
   return (
-    <div className="flex w-screen h-screen relative bg-background font-hanken-grotesk">
+    <div className="flex w-screen h-screen relative font-hanken-grotesk ">
+      <div className="absolute top-0 right-0  w-full h-full bg-background -z-20" />
       <Sidebar />
       {/* Scrollbar */}
       <div className="flex flex-col overflow-y-auto w-full align-center overflow-x-hidden max-w-3xl   mx-auto ">
-        <ChatScrollbar response={response} />
+        <ChatScrollbar response={response} userMessage={userMessage} />
         <ChatInputBox onSendMessage={handleMessage} />
       </div>
 
       {/* Background */}
-      <img className="absolute top-10 left-0 -z-0" src={Cloud1} alt="Cloud1" />
-      <img className="absolute top-36 right-0 " src={Cloud2} alt="Cloud2" />
+      <img className="absolute top-10 left-0 -z-10" src={Cloud1} alt="Cloud1" />
       <img
-        className="absolute bottom-0 right-0 w-full"
+        className="absolute top-36 right-0 -z-10"
+        src={Cloud2}
+        alt="Cloud2"
+      />
+      <img
+        className="absolute bottom-0 right-0 w-full -z-10"
         src={Hill2}
         alt="hill2"
       />
       <img
-        className="absolute bottom-0 right-0 w-full"
+        className="absolute bottom-0 right-0 w-full -z-10"
         src={Hill1}
         alt="hill1"
       />
       <img
-        className="absolute bottom-0 right-0 w-full"
+        className="absolute bottom-0 right-0 w-full -z-10"
         src={Grass}
         alt="grass"
       />
