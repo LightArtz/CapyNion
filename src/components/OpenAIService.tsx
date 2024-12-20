@@ -12,9 +12,8 @@ const openai = axios.create({
 
 export const getOpenAIResponse = async (query: string) => {
   // Use template literals to format the prompt
-  const formattedPrompt = `<|begin_of_text|><|start_header_id|>system<|end_header_id|>You are a helpful and smart assistant. You accurately provide answer to the provided user query.<|eot_id|><|start_header_id|>user<|end_header_id|> Here is the query: \`\`\`${query}\`\`\`.
-        Provide precise and concise answer.<|eot_id|><|start_header_id|>assistant<|end_header_id|>`;
-
+  const formattedPrompt = `<|begin_of_text|><|start_header_id|>system<|end_header_id|>You are a helpful and smart assistant. You accurately provide answer to the provided user query.<|eot_id|><|start_header_id|>user<|end_header_id|> Here is the query: \`\`\`${query}\`\`\`.\nProvide precise and concise answer.<|eot_id|><|start_header_id|>assistant<|end_header_id|>`;
+  
   const response = await openai.post('', {
     inputs: formattedPrompt, // Send the formatted prompt
     options: { 
@@ -23,5 +22,8 @@ export const getOpenAIResponse = async (query: string) => {
     max_tokens: 5000, // Adjust max_tokens as needed
   });
 
-  return response.data;
+  const rawText = response.data[0]?.generated_text ?? ''; // Get the generated text
+  const assistantResponse = rawText.split('<|start_header_id|>assistant<|end_header_id|>').pop()?.trim(); // Extract only the assistant's answer
+
+  return assistantResponse;
 };
