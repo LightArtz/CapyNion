@@ -13,17 +13,37 @@ const openai = axios.create({
 
 export const getOpenAIResponse = async (query: string) => {
   // Use template literals to format the prompt
-  const formattedPrompt = `<|begin_of_text|><|start_header_id|>system<|end_header_id|>You are a helpful and smart assistant. You accurately provide answer to the provided user query.<|eot_id|><|start_header_id|>user<|end_header_id|> Here is the query: \`\`\`${query}\`\`\`.\nProvide precise and concise answer.<|eot_id|><|start_header_id|>assistant<|end_header_id|>`;
+  const formattedPrompt = `
+    <|begin_of_text|>
+    <|start_header_id|>system<|end_header_id|>
+    You are a helpful and smart assistant. 
+    You accurately provide an answer to the provided user query.
+    
+    <|eot_id|><|start_header_id|>user<|end_header_id|> 
+    Here is the query: \`\`\`
+    ${query}
+    \`\`\`
+
+    Provide a precise and concise answer. 
+    The answer must be below 200 words and in paragraph format.
+    
+    <|eot_id|><|start_header_id|>assistant<|end_header_id|>
+  `;
 
   const response = await openai.post('', {
-    inputs: formattedPrompt, // Send the formatted prompt
-    options: {
-      use_cache: false, // Optional: Control cache behavior
+    inputs: formattedPrompt,
+    parameters: {
+      max_new_tokens: 250, // Limit to 20 tokens for the response
+      temperature: 0.7,   // Adjust randomness
+      top_p: 0.9,         // Nucleus sampling
     },
-    max_tokens: 5000, // Adjust max_tokens as needed
+    options: {
+      use_cache: false,    // Ensure no caching
+      wait_for_model: true // Wait if the model is loading
+    },
   });
 
-  const rawText = response.data[0]?.generated_text ?? ''; // Get the generated text
+  const rawText = response.data[0]?.generated_text ?? ''; // Get the generated text4
   const assistantResponse = rawText
     .split('<|start_header_id|>assistant<|end_header_id|>')
     .pop()
