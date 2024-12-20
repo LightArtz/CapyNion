@@ -19,7 +19,7 @@ function Home() {
     console.log('AI Response:', aiResponse);
 
     // Extract the generated_text from the response
-    if (aiResponse && aiResponse.length > 0 && aiResponse) {
+    if (aiResponse && aiResponse.length > 0) {
       setResponse(aiResponse);
     } else {
       setResponse('Sorry, I could not understand your input.');
