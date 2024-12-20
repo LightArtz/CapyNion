@@ -69,18 +69,6 @@ const ChatInputBox: React.FC<ChatInputBoxProps> = ({ onSendMessage }) => {
         // Enter: Send message
         e.preventDefault();
         if (message.trim()) {
-          // Call the backend service to get AI response
-          // const aiResponse = await getOpenAIResponse(message);
-
-          // console.log('AI Response:', aiResponse);
-
-          // // Extract the generated_text from the response
-          // if (aiResponse && aiResponse.length > 0 && aiResponse[0].generated_text) {
-          //   setResponse(aiResponse[0].generated_text);
-          // } else {
-          //   setResponse('Sorry, I could not understand your input.');
-          // }
-
           onSendMessage(message); // Trigger the callback
           setMessage(''); // Clear input after sending
           resetHeights(); // Reset heights
@@ -96,8 +84,8 @@ const ChatInputBox: React.FC<ChatInputBoxProps> = ({ onSendMessage }) => {
     console.log('AI Response:', aiResponse);
 
     // Extract the generated_text from the response
-    if (aiResponse && aiResponse.length > 0 && aiResponse[0].generated_text) {
-      setResponse(aiResponse[0].generated_text);
+    if (aiResponse && aiResponse.length > 0 && aiResponse) {
+      setResponse(aiResponse);
     } else {
       setResponse('Sorry, I could not understand your input.');
     }
