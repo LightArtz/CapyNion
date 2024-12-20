@@ -1,7 +1,8 @@
-function ChatScrollbar() {
+function ChatScrollbar({ response }: { response: string }) {
   return (
     <div className="my-auto w-full overflow-y-scroll">
       <div className="relative flex flex-col mx-4 ">
+        <h1>{response}</h1>
         <div className="absolute -left-4 top-5 w-5 h-5 bg-secondary rounded-full mr-4 z-10"></div>
         <article className=" mx-auto rounded-lg py-4 ml-4 z-10">
           Hey there, friend! 🌟 I’m CapyNion, your loyal capybara companion. How
