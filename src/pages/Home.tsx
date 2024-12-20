@@ -6,19 +6,30 @@ import Hill1 from '../assets/hill-1.svg';
 import Hill2 from '../assets/hill-2.svg';
 import Cloud1 from '../assets/cloud 1.svg';
 import Cloud2 from '../assets/cloud-2.svg';
+import { getOpenAIResponse } from '../components/OpenAIService';
+import { useState } from 'react';
 
 function Home() {
+  const [response, setResponse] = useState('');
+  const handleMessage = async (message: string) => {
+    const aiResponse = await getOpenAIResponse(message);
+
+    console.log('AI Response:', aiResponse);
+
+    // Extract the generated_text from the response
+    if (aiResponse && aiResponse.length > 0 && aiResponse) {
+      setResponse(aiResponse);
+    } else {
+      setResponse('Sorry, I could not understand your input.');
+    }
+  };
   return (
     <div className="flex w-screen h-screen relative bg-background font-hanken-grotesk">
       <Sidebar />
       {/* Scrollbar */}
       <div className="flex flex-col overflow-y-auto w-full align-center overflow-x-hidden max-w-3xl   mx-auto ">
-        <ChatScrollbar />
-        <ChatInputBox
-          onSendMessage={(message) => {
-            console.log(message); // Send message logic
-          }}
-        />
+        <ChatScrollbar response={response} />
+        <ChatInputBox onSendMessage={handleMessage} />
       </div>
 
       {/* Background */}

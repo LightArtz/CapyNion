@@ -3,10 +3,11 @@ import axios from 'axios';
 const API_KEY = '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';
 
 const openai = axios.create({
-  baseURL: 'https://api-inference.huggingface.co/models/meta-llama/Meta-Llama-3-8B-Instruct',
+  baseURL:
+    'https://api-inference.huggingface.co/models/meta-llama/Meta-Llama-3-8B-Instruct',
   headers: {
     'Content-Type': 'application/json',
-    'Authorization': `Bearer ${API_KEY}`,
+    Authorization: `Bearer ${API_KEY}`,
   },
 });
 
@@ -16,7 +17,7 @@ export const getOpenAIResponse = async (query: string) => {
   
   const response = await openai.post('', {
     inputs: formattedPrompt, // Send the formatted prompt
-    options: { 
+    options: {
       use_cache: false, // Optional: Control cache behavior
     },
     max_tokens: 5000, // Adjust max_tokens as needed

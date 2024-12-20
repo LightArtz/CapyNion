@@ -69,18 +69,6 @@ const ChatInputBox: React.FC<ChatInputBoxProps> = ({ onSendMessage }) => {
         // Enter: Send message
         e.preventDefault();
         if (message.trim()) {
-          // Call the backend service to get AI response
-          const aiResponse = await getOpenAIResponse(message);
-
-          console.log('AI Response:', aiResponse);
-
-          // Extract the generated_text from the response
-          if (aiResponse && aiResponse.length > 0 && aiResponse) {
-            setResponse(aiResponse);
-          } else {
-            setResponse('Sorry, I could not understand your input.');
-          }
-  
           onSendMessage(message); // Trigger the callback
           setMessage(''); // Clear input after sending
           resetHeights(); // Reset heights
@@ -88,7 +76,7 @@ const ChatInputBox: React.FC<ChatInputBoxProps> = ({ onSendMessage }) => {
       }
     }
   };
-  
+
   const handleSend = async () => {
     // Call the backend service to get AI response
     const aiResponse = await getOpenAIResponse(message);
@@ -101,13 +89,12 @@ const ChatInputBox: React.FC<ChatInputBoxProps> = ({ onSendMessage }) => {
     } else {
       setResponse('Sorry, I could not understand your input.');
     }
-  
+
     onSendMessage(message); // Trigger the callback
     setMessage(''); // Clear input after sending
     resetHeights(); // Reset heights
   };
 
-  
   const resetHeights = () => {
     // Reset the height of the textarea and container to their initial values
     if (textareaRef.current && containerRef.current) {
@@ -144,7 +131,7 @@ const ChatInputBox: React.FC<ChatInputBoxProps> = ({ onSendMessage }) => {
       </button>
       <div className="absolute z-20">
         <h1>{response}</h1>
-    </div>
+      </div>
     </div>
   );
 };
