@@ -68,31 +68,18 @@ const ChatInputBox: React.FC<ChatInputBoxProps> = ({ onSendMessage }) => {
       } else {
         // Enter: Send message
         e.preventDefault();
-        if (message.trim()) {
-          onSendMessage(message); // Trigger the callback
-          setMessage(''); // Clear input after sending
-          resetHeights(); // Reset heights
-        }
+        handleSend();
       }
     }
   };
 
   const handleSend = async () => {
     // Call the backend service to get AI response
-    const aiResponse = await getOpenAIResponse(message);
-
-    console.log('AI Response:', aiResponse);
-
-    // Extract the generated_text from the response
-    if (aiResponse && aiResponse.length > 0 && aiResponse) {
-      setResponse(aiResponse);
-    } else {
-      setResponse('Sorry, I could not understand your input.');
+    if (message.trim()) {
+      onSendMessage(message); // Trigger the callback
+      setMessage(''); // Clear input after sending
+      resetHeights(); // Reset heights
     }
-
-    onSendMessage(message); // Trigger the callback
-    setMessage(''); // Clear input after sending
-    resetHeights(); // Reset heights
   };
 
   const resetHeights = () => {
@@ -107,7 +94,7 @@ const ChatInputBox: React.FC<ChatInputBoxProps> = ({ onSendMessage }) => {
   return (
     <div
       ref={containerRef}
-      className="my-4 mx-4 bg-container-tertiary rounded-3xl p-4 flex items-center z-10 transition-all"
+      className="my-4 w-full mx-auto bg-container-tertiary rounded-3xl p-4 flex items-center z-10 transition-all max-w-4xl "
       style={{ height: `${INITIAL_CONTAINER_HEIGHT}px` }} // Initial container height
     >
       <textarea
