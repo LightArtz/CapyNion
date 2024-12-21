@@ -26,11 +26,11 @@ function Home() {
     }
   };
   return (
-    <div className="flex w-screen h-screen relative font-hanken-grotesk ">
+    <div className="flex w-screen h-screen relative font-hanken-grotesk  ">
       <div className="absolute top-0 right-0  w-full h-full bg-background -z-20" />
       <Sidebar />
       {/* Scrollbar */}
-      <div className="flex flex-col overflow-y-auto w-full align-center overflow-x-hidden max-w-3xl   mx-auto ">
+      <div className="flex flex-col  w-full align-center overflow-x-hidden mx-auto  overflow-y-scroll  ">
         <ChatScrollbar response={response} userMessage={userMessage} />
         <ChatInputBox onSendMessage={handleMessage} />
       </div>
