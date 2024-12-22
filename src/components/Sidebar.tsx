@@ -6,6 +6,10 @@ import { GoSidebarExpand, GoSidebarCollapse } from 'react-icons/go';
 import { BiMessageSquareEdit } from 'react-icons/bi';
 import { FiTool } from 'react-icons/fi';
 
+interface SidebarProps {
+  className?: string;
+}
+
 const Sidebar: React.FC = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const navigate = useNavigate(); // Hook to navigate programmatically
