@@ -1,12 +1,12 @@
 import ChatInputBox from '../components/ChatInputBox';
 import ChatScrollbar from '../components/ChatScrollbar';
 import Sidebar from '../components/Sidebar';
-import Grass from '../assets/bg-grass.svg';
-import Hill1 from '../assets/hill-1.svg';
-import Hill2 from '../assets/hill-2.svg';
-import Cloud1 from '../assets/cloud 1.svg';
-import Cloud2 from '../assets/cloud-2.svg';
-import { getOpenAIResponse, getSessionID } from '../components/OpenAIService';
+import Grass from '../assets/default/bg-grass.svg';
+import Hill1 from '../assets/default/hill-1.svg';
+import Hill2 from '../assets/default/hill-2.svg';
+import Cloud1 from '../assets/default/cloud 1.svg';
+import Cloud2 from '../assets/default/cloud-2.svg';
+import { getOpenAIResponse } from '../components/OpenAIService';
 import { useState } from 'react';
 
 function Home() {

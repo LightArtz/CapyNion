@@ -7,6 +7,10 @@ import { BiMessageSquareEdit } from 'react-icons/bi';
 import { FiTool } from 'react-icons/fi';
 
 interface SidebarProps {
+  className?: string;
+}
+
+interface SidebarProps {
   onNewChat: () => void; // or whatever type onNewChat should be
 }
 const Sidebar: React.FC<SidebarProps> = ({ onNewChat }) => {
@@ -14,16 +18,16 @@ const Sidebar: React.FC<SidebarProps> = ({ onNewChat }) => {
   const navigate = useNavigate(); // Hook to navigate programmatically
 
   const handleNavigateToFocus = () => {
-    navigate('/focus');
+    navigate('/focustimer');
   };
   const handleNavigateToCoping = () => {
-    navigate('/coping');
+    navigate('/stresscoping');
   };
   const handleNavigateToBreathe = () => {
     navigate('/breathe');
   };
   const handleNavigateToHome = () => {
-    navigate('/');
+    navigate('/home');
   };
   return (
     <div

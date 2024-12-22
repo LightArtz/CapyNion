@@ -1,85 +1,50 @@
-import React, { useState, useEffect } from 'react';
-import { FaPlay, FaPause } from 'react-icons/fa';
-import { BsCloudRain, BsTree, BsVolumeMute } from 'react-icons/bs';
+import { useEffect, useState } from 'react';
 
-type TimerProps = {
-  duration: number; // Duration in seconds
-};
+interface TimerProps {
+  duration: number;
+  isPaused: boolean;
+  setIsPaused: React.Dispatch<React.SetStateAction<boolean>>;
+  onComplete: () => void;
+}
 
-const Timer: React.FC<TimerProps> = ({ duration }) => {
+const Timer: React.FC<TimerProps> = ({ duration, isPaused, setIsPaused, onComplete }) => {
   const [timeLeft, setTimeLeft] = useState(duration);
-  const [isRunning, setIsRunning] = useState(false);
-  const [sound, setSound] = useState<string>('none');
-  const [audio, setAudio] = useState<HTMLAudioElement | null>(null);
+  const audio = new Audio('../assets/focus/alarm.mp3');
 
-  // Play/Pause Timer Logic
   useEffect(() => {
-    let timer: number | NodeJS.Timeout | undefined;
-    if (isRunning && timeLeft > 0) {
-      timer = setInterval(() => setTimeLeft((prev) => prev - 1), 1000);
-    } else if (timeLeft === 0) {
-      setIsRunning(false);
-    }
-    return () => clearInterval(timer);
-  }, [isRunning, timeLeft]);
+    let interval: NodeJS.Timeout | null = null;
 
-  // Handle Sound Effect Change
-  useEffect(() => {
-    if (audio) audio.pause(); // Pause existing sound
-    if (sound !== 'none') {
-      const newAudio = new Audio(
-        sound === 'rain'
-          ? '/sounds/rain.mp3'
-          : sound === 'forest'
-          ? '/sounds/forest.mp3'
-          : '',
-      );
-      newAudio.loop = true;
-      newAudio.play();
-      setAudio(newAudio);
+    if (!isPaused) {
+      interval = setInterval(() => {
+        setTimeLeft((prevTime) => {
+          if (prevTime <= 1) {
+            clearInterval(interval!);
+            audio.play();
+            onComplete();
+            return 0;
+          }
+          return prevTime - 1;
+        });
+      }, 1000);
     }
-  }, [sound]);
 
-  // Format Time
-  const formatTime = (time: number) => {
-    const minutes = Math.floor(time / 60);
-    const seconds = time % 60;
-    return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(
-      2,
-      '0',
-    )}`;
-  };
+    return () => {
+      if (interval) clearInterval(interval);
+    };
+  }, [isPaused, onComplete]);
+
+  const minutes = Math.floor(timeLeft / 60);
+  const seconds = timeLeft % 60;
 
   return (
-    <div className="p-5 text-center">
-      <h2 className="text-4xl font-bold mb-4">{formatTime(timeLeft)}</h2>
-      <div className="flex justify-center gap-4 mb-4">
-        <button
-          onClick={() => setIsRunning((prev) => !prev)}
-          className="p-3 bg-blue-500 text-white rounded-lg"
-        >
-          {isRunning ? <FaPause /> : <FaPlay />}
-        </button>
-      </div>
-      <div className="flex justify-center gap-4">
-        <button
-          onClick={() => setSound('none')}
-          className="p-3 bg-gray-300 rounded-lg"
-        >
-          <BsVolumeMute />
-        </button>
-        <button
-          onClick={() => setSound('rain')}
-          className="p-3 bg-gray-300 rounded-lg"
-        >
-          <BsCloudRain />
-        </button>
-        <button
-          onClick={() => setSound('forest')}
-          className="p-3 bg-gray-300 rounded-lg"
-        >
-          <BsTree />
-        </button>
+    <div className="relative flex flex-col items-center justify-center mt-[75px]">
+      <img 
+        src="../assets/breathe/circle.svg" 
+        alt="Circle Background" 
+        className="absolute justify-center items-center -z-10 scale-[1.5] mt-[75px]"
+      />
+      <div className="relative font-bold text-xl text-white z-10 mt-[75px]">
+        {minutes < 10 ? `0${minutes}` : minutes}:{seconds < 10 ? `0${seconds}` : seconds}
       </div>
     </div>
   );

@@ -26,7 +26,13 @@ export default function Auth() {
   };
   return (
     <>
-      <button onClick={handleLogin}>login</button>
+      <button
+        className="absolute top-6 right-6 bg-[#D5C4A1] font-bold px-7 py-1.5 rounded-lg shadow-md hover:bg-[#e6d3ae] z-30"
+        onClick={handleLogin}
+        style={{ color: '#795915' }}
+      >
+        login
+      </button>
     </>
   );
 }
