@@ -5,6 +5,7 @@ export default function Auth() {
   const navigate = useNavigate();
   const handleLogin = async () => {
     const handleAuthenticated = (authClient: AuthClient) => {
+      handleNavigateToHome();
       console.log(authClient);
       console.log('authenticated');
     };
@@ -17,10 +18,6 @@ export default function Auth() {
           handleAuthenticated(authClient);
         },
       });
-
-      if (await authClient.isAuthenticated()) {
-        console.log(authClient, 'is authenticated');
-      }
     };
     init();
     console.log('init');
