@@ -13,6 +13,12 @@ const Sidebar: React.FC<SidebarProps> = ({ onNewChat }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const navigate = useNavigate(); // Hook to navigate programmatically
 
+  const handleNavigateToFocus = () => {
+    navigate('/focus');
+  };
+  const handleNavigateToCoping = () => {
+    navigate('/coping');
+  };
   const handleNavigateToBreathe = () => {
     navigate('/breathe');
   };
@@ -64,11 +70,17 @@ const Sidebar: React.FC<SidebarProps> = ({ onNewChat }) => {
           >
             {isCollapsed ? <span>🧘🏻</span> : <span>🧘🏻Breathe</span>}
           </button>
-          <button className="flex items-center p-2 hover:bg-primary-hover focus:bg-primary-focus w-full">
+          <button
+            onClick={handleNavigateToFocus}
+            className="flex items-center p-2 hover:bg-primary-hover focus:bg-primary-focus w-full"
+          >
             {isCollapsed ? <span>⌛</span> : <span>⌛Focus Timer</span>}
           </button>
-          <button className="flex items-center p-2 hover:bg-primary-hover focus:bg-primary-focus w-full">
-            {isCollapsed ? <span>✅</span> : <span>✅To Do List</span>}
+          <button
+            onClick={handleNavigateToCoping}
+            className="flex items-center p-2 hover:bg-primary-hover focus:bg-primary-focus w-full"
+          >
+            {isCollapsed ? <span>❤️‍🩹</span> : <span>❤️‍🩹Coping Strategies</span>}
           </button>
         </div>
         <div className="flex flex-col items-start mt-8 space-y-2">

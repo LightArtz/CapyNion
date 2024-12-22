@@ -23,7 +23,7 @@ function Breathe() {
   ];
   return (
     <div className="flex min-h-screen bg-background ">
-      <Sidebar />
+      <Sidebar onNewChat={() => {}} />
       <div className="flex flex-col max-w-3xl mx-auto z-10 ">
         <h1 className="text-3xl font-bold mb-6">Meditation Timer</h1>
         {selectedDuration === null ? (
