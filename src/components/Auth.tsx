@@ -6,7 +6,6 @@ export default function Auth() {
   const handleLogin = async () => {
     const handleAuthenticated = (authClient: AuthClient) => {
       handleNavigateToHome();
-      console.log(authClient);
       console.log('authenticated');
     };
     const init = async () => {
@@ -23,7 +22,7 @@ export default function Auth() {
     console.log('init');
   };
   const handleNavigateToHome = () => {
-    navigate('/');
+    navigate('/home');
   };
   return (
     <>
