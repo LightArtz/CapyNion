@@ -9,7 +9,7 @@ const openai = axios.create({
     'Content-Type': 'application/json',
     Authorization: `Bearer ${API_KEY}`,
   },
-});
+}); 
 
 // In-memory store for the current session
 const conversationMemory: { role: string; content: string }[] = [];
