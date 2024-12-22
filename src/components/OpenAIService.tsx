@@ -1,6 +1,18 @@
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { createActor } from '../declarations/backend';
 
 const API_KEY = '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';
+
+const canisterId = process.env.CANISTER_ID_BACKEND;
+
+if (!canisterId) {
+  throw new Error(
+    'CANISTER_ID_BACKEND is not defined in the environment variables',
+  );
+}
+
+const backendActor = createActor(canisterId);
 
 const openai = axios.create({
   baseURL:
@@ -50,7 +62,7 @@ const summarizeMemory = async () => {
   // Extract the summarized text
   const summarizedText = response.data[0]?.generated_text ?? '';
 
-  console.log("Summarized: " + summarizedText.trim());
+  console.log('Summarized: ' + summarizedText.trim());
 
   return summarizedText.trim();
 };
@@ -60,14 +72,48 @@ const summarizeMemory = async () => {
  * @param query - User's query.
  * @returns Assistant's response.
  */
-export const getOpenAIResponse = async (query: string) => {
+
+export const getSessionID = async () => {
+  // Create a new session ID by interacting with the backend
+  const sessionID = await backendActor.createSession();
+  console.log('OAS', sessionID);
+  return sessionID;
+};
+
+export const getOpenAIResponse = async (query: string, sessionID: string) => {
   // Add the user query to the memory
   conversationMemory.push({ role: 'user', content: query });
+  // add here for the communication with Backend.mo
 
-  // Format the conversation history for the prompt
-  const formattedMemory = conversationMemory
-    .map((entry) => `<|start_header_id|>${entry.role}<|end_header_id|> ${entry.content}`)
-    .join('\n\n');
+  // const sessionID = await backendActor.createSession();
+  console.log('new OAS', sessionID);
+
+  // Add the user's query to the backend session
+  await backendActor.addMessage(sessionID, {
+    role: 'user',
+    content: query,
+  });
+
+  // Retrieve the conversation history for the session
+  const sessionMessages = await backendActor.getMessages(sessionID);
+
+  // Format the conversation history for the prompt, if messages exist
+  let formattedMemory = '';
+
+  // Ensure sessionMessages is not null and iterate over the outer array
+  if (sessionMessages) {
+    for (let i = 0; i < sessionMessages.length; i++) {
+      const messageArray = sessionMessages[i]; // This is a nested array of Message objects
+
+      // Loop through each message in the inner array and concatenate role and content
+      for (let j = 0; j < messageArray.length; j++) {
+        const entry = messageArray[j];
+
+        // Concatenate the role and content in the desired format
+        formattedMemory += `<|start_header_id|>${entry.role}<|end_header_id|> ${entry.content}\n\n`;
+      }
+    }
+  }
 
   // Use template literals to format the prompt
   const formattedPrompt = `
@@ -109,6 +155,11 @@ export const getOpenAIResponse = async (query: string) => {
   // Add the assistant response to the memory
   if (assistantResponse) {
     conversationMemory.push({ role: 'assistant', content: assistantResponse });
+    // add here for the communication with Backend.mo
+    await backendActor.addMessage(sessionID, {
+      role: 'assistant',
+      content: assistantResponse,
+    });
   }
 
   // If the memory exceeds a certain length (e.g., 15 entries), summarize it

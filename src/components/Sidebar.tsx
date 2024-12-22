@@ -6,7 +6,10 @@ import { GoSidebarExpand, GoSidebarCollapse } from 'react-icons/go';
 import { BiMessageSquareEdit } from 'react-icons/bi';
 import { FiTool } from 'react-icons/fi';
 
-const Sidebar: React.FC = () => {
+interface SidebarProps {
+  onNewChat: () => void; // or whatever type onNewChat should be
+}
+const Sidebar: React.FC<SidebarProps> = ({ onNewChat }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const navigate = useNavigate(); // Hook to navigate programmatically
 
@@ -39,7 +42,10 @@ const Sidebar: React.FC = () => {
             >
               <GoSidebarExpand size={20} />
             </button>
-            <button className="p-2 rounded-md hover:bg-primary-hover mr-2">
+            <button
+              onClick={onNewChat}
+              className="p-2 rounded-md hover:bg-primary-hover mr-2"
+            >
               <BiMessageSquareEdit size={20} />
             </button>
           </div>
