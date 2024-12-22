@@ -76,8 +76,9 @@ export const getOpenAIResponse = async (query: string) => {
   // add here for the communication with Backend.mo
   
   // const sessionID = await backendActor.createSession();
-  let sessionID = "key12"; 
+  let sessionID = "key0"; 
   console.log(sessionID);
+  console.log(query);
 
   // Add the user's query to the backend session
   await backendActor.addMessage(sessionID, {
@@ -91,20 +92,20 @@ export const getOpenAIResponse = async (query: string) => {
   // Format the conversation history for the prompt, if messages exist
   let formattedMemory = '';
 
-// Ensure sessionMessages is not null and iterate over the outer array
-if (sessionMessages) {
-  for (let i = 0; i < sessionMessages.length; i++) {
-    const messageArray = sessionMessages[i]; // This is a nested array of Message objects
-    
-    // Loop through each message in the inner array and concatenate role and content
-    for (let j = 0; j < messageArray.length; j++) {
-      const entry = messageArray[j];
+  // Ensure sessionMessages is not null and iterate over the outer array
+  if (sessionMessages) {
+    for (let i = 0; i < sessionMessages.length; i++) {
+      const messageArray = sessionMessages[i]; // This is a nested array of Message objects
       
-      // Concatenate the role and content in the desired format
-      formattedMemory += `<|start_header_id|>${entry.role}<|end_header_id|> ${entry.content}\n\n`;
+      // Loop through each message in the inner array and concatenate role and content
+      for (let j = 0; j < messageArray.length; j++) {
+        const entry = messageArray[j];
+        
+        // Concatenate the role and content in the desired format
+        formattedMemory += `<|start_header_id|>${entry.role}<|end_header_id|> ${entry.content}\n\n`;
+      }
     }
   }
-}
 
 
   // Use template literals to format the prompt
