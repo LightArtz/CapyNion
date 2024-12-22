@@ -6,16 +6,16 @@ import Hill1 from '../assets/hill-1.svg';
 import Hill2 from '../assets/hill-2.svg';
 import Cloud1 from '../assets/cloud 1.svg';
 import Cloud2 from '../assets/cloud-2.svg';
-import { getOpenAIResponse } from '../components/OpenAIService';
+import { getOpenAIResponse, getSessionID } from '../components/OpenAIService';
 import { useState } from 'react';
-import { BiSolidCaretUpSquare } from 'react-icons/bi';
 
 function Home() {
   const [response, setResponse] = useState('');
   const [userMessage, setUserMessage] = useState('');
+  const [sessionID, setSessionID] = useState('key0');
   const handleMessage = async (message: string) => {
     setUserMessage(message);
-    const aiResponse = await getOpenAIResponse(message);
+    const aiResponse = await getOpenAIResponse(message, sessionID);
     console.log('AI Response:', aiResponse);
 
     // Extract the generated_text from the response
@@ -25,14 +25,25 @@ function Home() {
       setResponse('Sorry, I could not understand your input.');
     }
   };
+
+  const handleNewSession = async () => {
+    setSessionID(await getSessionID());
+    console.log('(home) New Session ID:', sessionID);
+  };
+  // tes session
+  // const handleToSession = async () => {
+  //   setSessionID('key0');
+  // };
+
   return (
     <div className="flex w-screen h-screen relative font-hanken-grotesk  ">
       <div className="absolute top-0 right-0  w-full h-full bg-background -z-20" />
-      <Sidebar />
+      <Sidebar onNewChat={handleNewSession} />
       {/* Scrollbar */}
       <div className="flex flex-col  w-full align-center overflow-x-hidden mx-auto  overflow-y-scroll  ">
         <ChatScrollbar response={response} userMessage={userMessage} />
         <ChatInputBox onSendMessage={handleMessage} />
+        {/* <button onClick={handleToSession}>back to initial session </button> */}
       </div>
 
       {/* Background */}
