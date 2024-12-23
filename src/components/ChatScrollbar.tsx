@@ -22,7 +22,7 @@ function ChatScrollbar({ chatHistory, setConversation }: ChatScrollbarProps) {
   return (
     <div
       ref={chatContainerRef}
-      className="my-auto h-full p-4 w-full overflow-y-scroll px-[25%] xs:px-8"
+      className="my-auto h-full p-4 w-full overflow-y-scroll px-[25%] xs:px-8 pt-[5%]"
     >
       <div className="flex flex-col space-y-10">
         {chatHistory.map((msg, index) => (

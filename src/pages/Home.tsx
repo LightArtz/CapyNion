@@ -115,6 +115,10 @@ function Home() {
         onNewChat={handleNewSession}
         changeSessionID={changeSessionID}
         sessionKeys={sessionKeys}
+        activeSession={null}
+        setActiveSession={function (id: string): void {
+          throw new Error('Function not implemented.');
+        }}
       />
       {/* Scrollbar */}
       <div className="flex flex-col  w-full align-center overflow-x-hidden mx-auto  overflow-y-scroll  ">
