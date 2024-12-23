@@ -2,17 +2,11 @@ import { useEffect, useRef, useState } from 'react';
 import capyIcon from '../assets/CapyIcon.png';
 
 function ChatScrollbar({
-  userMessage,
-  response,
+  conversation,
 }: {
-  userMessage: string;
-  response: string;
+  conversation: { role: string; content: string }[];
 }) {
   const chatContainerRef = useRef<HTMLDivElement>(null);
-
-  const [conversation, setConversation] = useState([
-    { sender: 'bot', message: 'Hello! How can I assist you today?' },
-  ]);
 
   // Auto-scroll to the bottom whenever `conversation` updates
   useEffect(() => {
@@ -21,26 +15,6 @@ function ChatScrollbar({
         chatContainerRef.current.scrollHeight;
     }
   }, [conversation]);
-
-  // Add user message to conversation only if it's non-empty
-  useEffect(() => {
-    if (userMessage.trim()) {
-      setConversation((prevConversation) => [
-        ...prevConversation,
-        { sender: 'user', message: userMessage },
-      ]);
-    }
-  }, [userMessage]);
-
-  // Add bot response to conversation only if it's non-empty
-  useEffect(() => {
-    if (response.trim()) {
-      setConversation((prevConversation) => [
-        ...prevConversation,
-        { sender: 'bot', message: response },
-      ]);
-    }
-  }, [response]);
 
   return (
     <div
@@ -52,10 +26,10 @@ function ChatScrollbar({
           <div
             key={index}
             className={`relative flex ${
-              msg.sender === 'user' ? 'justify-end' : 'justify-start'
+              msg.role === 'user' ? 'justify-end' : 'justify-start'
             }`}
           >
-            {msg.sender === 'bot' ? (
+            {msg.role === 'bot' ? (
               <img
                 src={capyIcon}
                 alt="CapyIcon"
@@ -64,12 +38,12 @@ function ChatScrollbar({
             ) : null}
             <div
               className={`rounded-lg p-3 max-w-full ${
-                msg.sender === 'user'
+                msg.role === 'user'
                   ? 'bg-primary text-text-light'
                   : 'bg-gray-200 text-black'
               }`}
             >
-              <span>{msg.message}</span>
+              <span>{msg.content}</span>
             </div>
           </div>
         ))}

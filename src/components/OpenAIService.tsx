@@ -21,7 +21,7 @@ const openai = axios.create({
     'Content-Type': 'application/json',
     Authorization: `Bearer ${API_KEY}`,
   },
-}); 
+});
 
 // In-memory store for the current session
 const conversationMemory: { role: string; content: string }[] = [];
@@ -84,7 +84,7 @@ export const getAllData = async () => {
   const allData: string[] = await backendActor.getAllSessionIDs();
   console.log('Fetched all the data');
   return allData;
-}
+};
 
 export const getOpenAIResponse = async (query: string, sessionID: string) => {
   // Add the user query to the memory
@@ -182,4 +182,36 @@ export const getOpenAIResponse = async (query: string, sessionID: string) => {
 // Clear the conversation memory (for privacy or session reset)
 export const clearConversationMemory = () => {
   conversationMemory.length = 0;
+};
+/**
+ * Fetch all messages for a specific session ID.
+ * @param sessionID - The ID of the session.
+ * @returns List of messages for the session.
+ */
+export const getMessagesForSession = async (
+  sessionID: string,
+): Promise<{ role: string; content: string }[]> => {
+  const sessionMessages = await backendActor.getMessages(sessionID);
+
+  // Ensure sessionMessages is not null and flatten the nested array into a single array
+  const flatMessages: { role: string; content: string }[] = [];
+  if (sessionMessages) {
+    for (let i = 0; i < sessionMessages.length; i++) {
+      const messageArray = sessionMessages[i];
+      flatMessages.push(...messageArray);
+    }
+  }
+
+  return flatMessages;
+};
+
+/**
+ * Load a session's messages into conversation memory.
+ * @param sessionID - The ID of the session to load.
+ */
+export const loadSession = async (sessionID: string) => {
+  const messages = await getMessagesForSession(sessionID);
+  // Reset the conversation memory with the fetched messages
+  conversationMemory.length = 0;
+  conversationMemory.push(...messages);
 };
