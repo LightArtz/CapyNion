@@ -6,7 +6,7 @@ import Hill1 from '../assets/default/hill-1.svg';
 import Hill2 from '../assets/default/hill-2.svg';
 import Cloud1 from '../assets/default/cloud 1.svg';
 import Cloud2 from '../assets/default/cloud-2.svg';
-import { getOpenAIResponse } from '../components/OpenAIService';
+import { getOpenAIResponse, getSessionID } from '../components/OpenAIService';
 import { useState } from 'react';
 
 function Home() {
