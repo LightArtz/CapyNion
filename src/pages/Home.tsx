@@ -7,7 +7,7 @@ import Hill2 from '../assets/default/hill-2.svg';
 import Cloud1 from '../assets/default/cloud 1.svg';
 import Cloud2 from '../assets/default/cloud-2.svg';
 import { getOpenAIResponse, getSessionID } from '../components/OpenAIService';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 function Home() {
   const [response, setResponse] = useState('');
@@ -16,7 +16,7 @@ function Home() {
 
   const handleMessage = async (message: string) => {
     // setSessionID(await getSessionID());
-    // panggil function dari Sidebar.tsx  
+    // panggil function dari Sidebar.tsx
     // Create a ref to store Sidebar's reference
     let currentSessionID = sessionID;
 
@@ -48,12 +48,11 @@ function Home() {
   
     return newSessionID; // Return the new session ID
   };
-
   const changeSessionID = async (id: string) => {
-    if (id !== null){
+    if (id !== null) {
       setSessionID(id);
     }
-  }
+  };
 
   // tes session
   // const handleToSession = async () => {
@@ -63,7 +62,7 @@ function Home() {
   return (
     <div className="flex w-screen h-screen relative font-hanken-grotesk  ">
       <div className="absolute top-0 right-0  w-full h-full bg-background -z-20" />
-      <Sidebar onNewChat={handleNewSession} changeSessionID={changeSessionID}/>
+      <Sidebar onNewChat={handleNewSession} changeSessionID={changeSessionID} />
       {/* Scrollbar */}
       <div className="flex flex-col  w-full align-center overflow-x-hidden mx-auto  overflow-y-scroll  ">
         <ChatScrollbar response={response} userMessage={userMessage} />
