@@ -27,7 +27,8 @@ const ChatInputBox: React.FC<ChatInputBoxProps> = ({ onSendMessage }) => {
       const textarea = textareaRef.current;
       const container = containerRef.current;
 
-      // Reset height to auto to recalculate scrollHeight
+      // Reset height to auto to re'
+      // 'lculate scrollHeight
       textarea.style.height = 'auto';
       const scrollHeight = textarea.scrollHeight;
 

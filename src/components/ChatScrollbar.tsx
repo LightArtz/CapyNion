@@ -3,7 +3,9 @@ import capyIcon from '../assets/CapyIcon.png';
 
 type ChatScrollbarProps = {
   chatHistory: { sender: string; message: string }[];
-  setConversation: React.Dispatch<React.SetStateAction<{ sender: string; message: string }[]>>;
+  setConversation: React.Dispatch<
+    React.SetStateAction<{ sender: string; message: string }[]>
+  >;
 };
 
 function ChatScrollbar({ chatHistory, setConversation }: ChatScrollbarProps) {
@@ -12,7 +14,8 @@ function ChatScrollbar({ chatHistory, setConversation }: ChatScrollbarProps) {
   // Auto-scroll to the bottom whenever `chatHistory` updates
   useEffect(() => {
     if (chatContainerRef.current) {
-      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+      chatContainerRef.current.scrollTop =
+        chatContainerRef.current.scrollHeight;
     }
   }, [chatHistory]);
 

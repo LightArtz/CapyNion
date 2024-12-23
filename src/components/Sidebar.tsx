@@ -1,27 +1,32 @@
-// Sidebar.tsx
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router';
-
+import { useNavigate, useLocation } from 'react-router';
 import { GoSidebarExpand, GoSidebarCollapse } from 'react-icons/go';
 import { BiMessageSquareEdit } from 'react-icons/bi';
 import { FiTool } from 'react-icons/fi';
 
 interface SidebarProps {
-  className?: string;
-}
-
-interface SidebarProps {
-  onNewChat: () => void; // or whatever type onNewChat should be
+  onNewChat: () => void;
   changeSessionID: (id: string) => void;
   sessionKeys: string[];
+  activeSession: string | null; // Add active session prop
+  setActiveSession: (id: string) => void; // Function to set active session
 }
-export const Sidebar: React.FC<SidebarProps> = ({ onNewChat, changeSessionID, sessionKeys }) => {
+
+export const Sidebar: React.FC<SidebarProps> = ({
+  onNewChat,
+  changeSessionID,
+  sessionKeys,
+  activeSession,
+  setActiveSession,
+}) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const navigate = useNavigate(); // Hook to navigate programmatically
+  const location = useLocation(); // Hook to access current route
 
   const handleSessionChange = (id: string) => {
-    console.log("Session ID is changed to " + id);
-    changeSessionID(id);  // Trigger the callback from parent to update session ID
+    console.log('Session ID is changed to ' + id);
+    changeSessionID(id); // Trigger the callback from parent to update session ID
+    setActiveSession(id); // Set the clicked session as the active session
   };
 
   const handleNavigateToFocus = () => {
@@ -36,10 +41,13 @@ export const Sidebar: React.FC<SidebarProps> = ({ onNewChat, changeSessionID, se
   const handleNavigateToHome = () => {
     navigate('/home');
   };
+
+  const isHomeRoute = location.pathname === '/home';
+
   return (
     <div
       className={`flex h-screen ${
-        isCollapsed ? 'w-10' : 'w-80 rounded-r-2xl'
+        isCollapsed ? 'w-10' : 'w-64 rounded-r-2xl'
       } bg-container-primary text-text-light transition-width duration-300 z-50`}
     >
       <div className="flex flex-col w-full">
@@ -78,43 +86,61 @@ export const Sidebar: React.FC<SidebarProps> = ({ onNewChat, changeSessionID, se
           )}
           <button
             onClick={handleNavigateToBreathe}
-            className="flex items-center p-2 hover:bg-primary-hover focus:bg-primary-focus w-full"
+            className={`flex items-center p-2 hover:bg-primary-hover focus:bg-primary-focus ${
+              isCollapsed ? 'w-10 justify-center' : 'w-64'
+            }`}
           >
             {isCollapsed ? <span>🧘🏻</span> : <span>🧘🏻Breathe</span>}
           </button>
           <button
             onClick={handleNavigateToFocus}
-            className="flex items-center p-2 hover:bg-primary-hover focus:bg-primary-focus w-full"
+            className={`flex items-center p-2 hover:bg-primary-hover focus:bg-primary-focus ${
+              isCollapsed ? 'w-10 justify-center' : 'w-64'
+            }`}
           >
             {isCollapsed ? <span>⌛</span> : <span>⌛Focus Timer</span>}
           </button>
           <button
             onClick={handleNavigateToCoping}
-            className="flex items-center p-2 hover:bg-primary-hover focus:bg-primary-focus w-full"
+            className={`flex items-center p-2 hover:bg-primary-hover focus:bg-primary-focus ${
+              isCollapsed ? 'w-10 justify-center' : 'w-64'
+            }`}
           >
             {isCollapsed ? <span>❤️‍🩹</span> : <span>❤️‍🩹Coping Strategies</span>}
           </button>
         </div>
+
+        {/* Chat History or Navigate to Home */}
         <div className="flex flex-col items-start mt-8 space-y-2">
           {isCollapsed ? (
             <FiTool size={20} className="ml-2" />
           ) : (
             <h1 className="p-2 font-bold">Chat History</h1>
           )}
-            {sessionKeys.map((key, index) => (
+          {isHomeRoute ? (
+            sessionKeys.map((key, index) => (
+              <button
+                key={key} // Unique key for each button
+                onClick={() => handleSessionChange(key)}
+                className={`flex items-center p-2 hover:bg-primary-hover focus:bg-primary-focus w-full ${
+                  activeSession === key ? 'bg-primary-focus' : ''
+                }`}
+              >
+                {isCollapsed ? (
+                  <span>💬</span>
+                ) : (
+                  <span>{`Chat ${index + 1}`}</span>
+                )}
+              </button>
+            ))
+          ) : (
             <button
-              key={key} // Unique key for each button
-              onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
-                if (event.target instanceof HTMLButtonElement) {
-                  handleSessionChange(event.target.id);
-                }
-              }}
-              id={key} // Use session key as ID
+              onClick={handleNavigateToHome}
               className="flex items-center p-2 hover:bg-primary-hover focus:bg-primary-focus w-full"
             >
-              <span>{`Session ${key}`}</span> {/* Dynamic session name */}
+              {isCollapsed ? <span>🏠</span> : <span>Go to Home</span>}
             </button>
-          ))}
+          )}
         </div>
       </div>
     </div>
