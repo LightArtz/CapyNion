@@ -12,11 +12,21 @@ import { useState } from 'react';
 function Home() {
   const [response, setResponse] = useState('');
   const [userMessage, setUserMessage] = useState('');
-  const [sessionID, setSessionID] = useState('key0');
+  const [sessionID, setSessionID] = useState('');
+
   const handleMessage = async (message: string) => {
+    // setSessionID(await getSessionID());
+    // panggil function dari Sidebar.tsx  
+    // Create a ref to store Sidebar's reference
+    if (sessionID === ''){
+      console.log("no session is clicked. SessionID is empty.")
+      await handleNewSession();
+    }
+
     setUserMessage(message);
     const aiResponse = await getOpenAIResponse(message, sessionID);
     console.log('AI Response:', aiResponse);
+    console.log(sessionID);
 
     // Extract the generated_text from the response
     if (aiResponse && aiResponse.length > 0) {
@@ -27,9 +37,18 @@ function Home() {
   };
 
   const handleNewSession = async () => {
-    setSessionID(await getSessionID());
+    const newSessionID = await getSessionID();
+    console.log("new sessionid: ", newSessionID);
+    setSessionID(newSessionID);
     console.log('(home) New Session ID:', sessionID);
   };
+
+  const changeSessionID = async (id: string) => {
+    if (id !== null){
+      setSessionID(id);
+    }
+  }
+
   // tes session
   // const handleToSession = async () => {
   //   setSessionID('key0');
@@ -38,7 +57,7 @@ function Home() {
   return (
     <div className="flex w-screen h-screen relative font-hanken-grotesk  ">
       <div className="absolute top-0 right-0  w-full h-full bg-background -z-20" />
-      <Sidebar onNewChat={handleNewSession} />
+      <Sidebar onNewChat={handleNewSession} changeSessionID={changeSessionID}/>
       {/* Scrollbar */}
       <div className="flex flex-col  w-full align-center overflow-x-hidden mx-auto  overflow-y-scroll  ">
         <ChatScrollbar response={response} userMessage={userMessage} />
