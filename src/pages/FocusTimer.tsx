@@ -80,7 +80,7 @@ function FocusTimer() {
 
   return (
     <div className="flex min-h-screen font-hanken-grotesk" style={{ background: 'linear-gradient(to bottom, #073343, #1281A9)' }}>
-      <Sidebar />
+      <Sidebar onNewChat={() => {}}/>
       <div className="flex flex-col max-w-3xl mx-auto z-10 relative h-screen">
         <h1 className="mt-[45px] text-4xl font-bold mb-6" style={{ color: '#76B4CB' }}>Focus Timer</h1>
         {selectedDuration === null ? (
