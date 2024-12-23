@@ -18,15 +18,18 @@ function Home() {
     // setSessionID(await getSessionID());
     // panggil function dari Sidebar.tsx  
     // Create a ref to store Sidebar's reference
-    if (sessionID === ''){
-      console.log("no session is clicked. SessionID is empty.")
-      await handleNewSession();
+    let currentSessionID = sessionID;
+
+    if (sessionID === '') {
+      console.log("no session is clicked. SessionID is empty.");
+      currentSessionID = await handleNewSession(); // Get the updated session ID
+      console.log("session id after await: ", currentSessionID);
     }
 
     setUserMessage(message);
-    const aiResponse = await getOpenAIResponse(message, sessionID);
+    const aiResponse = await getOpenAIResponse(message, currentSessionID);
     console.log('AI Response:', aiResponse);
-    console.log(sessionID);
+    console.log(currentSessionID);
 
     // Extract the generated_text from the response
     if (aiResponse && aiResponse.length > 0) {
@@ -35,12 +38,15 @@ function Home() {
       setResponse('Sorry, I could not understand your input.');
     }
   };
-
-  const handleNewSession = async () => {
+  
+  const handleNewSession = async (): Promise<string> => {
     const newSessionID = await getSessionID();
     console.log("new sessionid: ", newSessionID);
+    
+    // Set the session ID and ensure the state update is scheduled
     setSessionID(newSessionID);
-    console.log('(home) New Session ID:', sessionID);
+  
+    return newSessionID; // Return the new session ID
   };
 
   const changeSessionID = async (id: string) => {

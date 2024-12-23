@@ -54,6 +54,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ onNewChat, changeSessionID }) 
             >
               <GoSidebarExpand size={20} />
             </button>
+            {/* New chat */}
             <button
               onClick={onNewChat}
               className="p-2 rounded-md hover:bg-primary-hover mr-2"
@@ -102,14 +103,22 @@ export const Sidebar: React.FC<SidebarProps> = ({ onNewChat, changeSessionID }) 
             {isCollapsed ? <span>🧘🏻</span> : <span>Hello world! </span>}
           </button>
           <button
-            onClick={() => handleSessionChange("key1")}  // Call changeSessionID with "key1"
+            onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
+              if (event.target instanceof HTMLButtonElement) {
+                handleSessionChange(event.target.id);
+              }
+            }}
             id = "key1"
             className="flex items-center p-2 hover:bg-primary-hover focus:bg-primary-focus w-full"
           >
             {isCollapsed ? <span>🧘🏻</span> : <span>Session 1</span>}
           </button>
           <button
-             onClick={() => handleSessionChange("key2")}  // Call changeSessionID with "key2"
+             onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
+              if (event.target instanceof HTMLButtonElement) {
+                handleSessionChange(event.target.id);
+              } 
+            }}
             id = "key2"
             className="flex items-center p-2 hover:bg-primary-hover focus:bg-primary-focus w-full"
           >
