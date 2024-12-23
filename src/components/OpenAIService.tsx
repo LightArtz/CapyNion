@@ -23,6 +23,11 @@ const openai = axios.create({
   },
 }); 
 
+export interface Message {
+  role: string; // `Text` in Motoko maps to `string` in TypeScript
+  content: string;
+}
+
 // In-memory store for the current session
 const conversationMemory: { role: string; content: string }[] = [];
 
@@ -84,7 +89,19 @@ export const getAllData = async () => {
   const allData: string[] = await backendActor.getAllSessionIDs();
   console.log('Fetched all the data');
   return allData;
-}
+};
+
+export const getSessionData = async (id: string): Promise<Message[]> => {
+  // Get data from backend
+  const sessionData = await backendActor.getMessages(id);
+
+  // Handle different return cases: null or [Message[]]
+  if (!sessionData || sessionData.length === 0) {
+    return []; // If null or empty, return an empty array
+  }
+
+  return sessionData[0]; // Extract the array from the tuple
+};
 
 export const getOpenAIResponse = async (query: string, sessionID: string) => {
   // Add the user query to the memory

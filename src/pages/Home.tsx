@@ -6,7 +6,7 @@ import Hill1 from '../assets/default/hill-1.svg';
 import Hill2 from '../assets/default/hill-2.svg';
 import Cloud1 from '../assets/default/cloud 1.svg';
 import Cloud2 from '../assets/default/cloud-2.svg';
-import { getOpenAIResponse, getSessionID, getAllData } from '../components/OpenAIService';
+import { getOpenAIResponse, getSessionID, getAllData, getSessionData } from '../components/OpenAIService';
 import { useEffect, useState } from 'react';
 
 function Home() {
@@ -14,6 +14,9 @@ function Home() {
   const [userMessage, setUserMessage] = useState('');
   const [sessionID, setSessionID] = useState('');
   const [sessionKeys, setSessionKeys] = useState<string[]>([]);
+  const [conversation, setConversation] = useState<{ sender: string; message: string }[]>([
+    { sender: 'bot', message: 'Hello! How can I assist you today?' },
+  ]);
 
   const logAllDataKeys = async () => {
     const allData: string[] = await getAllData(); // await the async function to get the resolved value
@@ -23,13 +26,24 @@ function Home() {
     }
   };
 
+  const loadChat = async (id: string) => {
+  // Fill the code here
+    const chatData = await getSessionData(id);
+    const formattedChat = chatData.map((message: any) => ({
+      sender: message.role === 'user' ? 'user' : 'bot',
+      message: message.content,
+    }));
+
+    setConversation(formattedChat); // Update conversation with the new session chat.
+  }
+
   useEffect(() => {
     logAllDataKeys(); // Call this when component mounts
   }, []);
 
   const handleMessage = async (message: string) => {
-    await logAllDataKeys();
-    // setSessionID(await getSessionID());
+    // await logAllDataKeys();
+
     // panggil function dari Sidebar.tsx
     // Create a ref to store Sidebar's reference
     let currentSessionID = sessionID;
@@ -48,6 +62,12 @@ function Home() {
     // Extract the generated_text from the response
     if (aiResponse && aiResponse.length > 0) {
       setResponse(aiResponse);
+      // Update the conversation
+      setConversation((prev) => [
+        ...prev,
+        { sender: 'user', message },
+        { sender: 'bot', message: aiResponse },
+      ]);
     } else {
       setResponse('Sorry, I could not understand your input.');
     }
@@ -64,9 +84,11 @@ function Home() {
   
     return newSessionID; // Return the new session ID
   };
+
   const changeSessionID = async (id: string) => {
     if (id !== null) {
       setSessionID(id);
+      await loadChat(id);
     }
   };
 
@@ -81,7 +103,10 @@ function Home() {
       <Sidebar onNewChat={handleNewSession} changeSessionID={changeSessionID} sessionKeys={sessionKeys}/>
       {/* Scrollbar */}
       <div className="flex flex-col  w-full align-center overflow-x-hidden mx-auto  overflow-y-scroll  ">
-        <ChatScrollbar response={response} userMessage={userMessage} />
+        <ChatScrollbar 
+          chatHistory={conversation}
+          setConversation={setConversation} // Pass setConversation here
+          />
         <ChatInputBox onSendMessage={handleMessage} />
         {/* <button onClick={handleToSession}>back to initial session </button> */}
       </div>
