@@ -16,7 +16,9 @@ function StressCoping() {
 
   return (
     <div className="flex min-h-screen font-hanken-grotesk" style={{ background: 'linear-gradient(to bottom, #003281, #FFC24C)' }}>
-      <Sidebar onNewChat={() => {}}/>
+      <Sidebar onNewChat={() => { } } changeSessionID={function (id: string): void {
+        throw new Error('Function not implemented.');
+      } }/>
       <div
         className="flex flex-col items-center z-10 relative w-screen h-screen"
         style={{

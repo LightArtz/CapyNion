@@ -80,6 +80,12 @@ export const getSessionID = async () => {
   return sessionID;
 };
 
+export const getAllData = async () => {
+  const allData: string[] = await backendActor.getAllSessionIDs();
+  console.log('Fetched all the data');
+  return allData;
+}
+
 export const getOpenAIResponse = async (query: string, sessionID: string) => {
   // Add the user query to the memory
   conversationMemory.push({ role: 'user', content: query });

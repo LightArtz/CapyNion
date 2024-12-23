@@ -85,7 +85,7 @@ function Breathe() {
       className="flex min-h-screen font-hanken-grotesk"
       style={{ backgroundColor: '#A1DFF6' }}
     >
-      <Sidebar onNewChat={() => {}} changeSessionID={() => {}} />
+      <Sidebar onNewChat={() => { } } changeSessionID={() => { } } sessionKeys={[]} />
       <div className="flex flex-col max-w-3xl mx-auto z-10 relative h-screen">
         <h1
           className="mt-[45px] text-4xl font-bold mb-6"

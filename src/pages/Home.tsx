@@ -6,15 +6,29 @@ import Hill1 from '../assets/default/hill-1.svg';
 import Hill2 from '../assets/default/hill-2.svg';
 import Cloud1 from '../assets/default/cloud 1.svg';
 import Cloud2 from '../assets/default/cloud-2.svg';
-import { getOpenAIResponse, getSessionID } from '../components/OpenAIService';
+import { getOpenAIResponse, getSessionID, getAllData } from '../components/OpenAIService';
 import { useEffect, useState } from 'react';
 
 function Home() {
   const [response, setResponse] = useState('');
   const [userMessage, setUserMessage] = useState('');
   const [sessionID, setSessionID] = useState('');
+  const [sessionKeys, setSessionKeys] = useState<string[]>([]);
+
+  const logAllDataKeys = async () => {
+    const allData: string[] = await getAllData(); // await the async function to get the resolved value
+    setSessionKeys(allData); // Set session keys to state
+    for (let i = 0; i < allData.length; i++) {
+      console.log("i = " + i + " -> " + allData[i]); // log each key
+    }
+  };
+
+  useEffect(() => {
+    logAllDataKeys(); // Call this when component mounts
+  }, []);
 
   const handleMessage = async (message: string) => {
+    await logAllDataKeys();
     // setSessionID(await getSessionID());
     // panggil function dari Sidebar.tsx
     // Create a ref to store Sidebar's reference
@@ -45,6 +59,8 @@ function Home() {
     
     // Set the session ID and ensure the state update is scheduled
     setSessionID(newSessionID);
+
+    await logAllDataKeys(); // Call this when component mounts
   
     return newSessionID; // Return the new session ID
   };
@@ -62,7 +78,7 @@ function Home() {
   return (
     <div className="flex w-screen h-screen relative font-hanken-grotesk  ">
       <div className="absolute top-0 right-0  w-full h-full bg-background -z-20" />
-      <Sidebar onNewChat={handleNewSession} changeSessionID={changeSessionID} />
+      <Sidebar onNewChat={handleNewSession} changeSessionID={changeSessionID} sessionKeys={sessionKeys}/>
       {/* Scrollbar */}
       <div className="flex flex-col  w-full align-center overflow-x-hidden mx-auto  overflow-y-scroll  ">
         <ChatScrollbar response={response} userMessage={userMessage} />

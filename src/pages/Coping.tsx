@@ -5,7 +5,9 @@ function Coping() {
   const [strategy, setStrategy] = useState('');
   return (
     <div className="w-screen h-screen flex">
-      <Sidebar onNewChat={() => {}} />
+      <Sidebar onNewChat={() => { } } changeSessionID={function (id: string): void {
+        throw new Error('Function not implemented.');
+      } } sessionKeys={[]} />
       {strategy === '' && (
         <div className="w-full flex flex-col">
           <h1>Stress-coping Strategies</h1>

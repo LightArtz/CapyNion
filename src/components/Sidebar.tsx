@@ -13,8 +13,9 @@ interface SidebarProps {
 interface SidebarProps {
   onNewChat: () => void; // or whatever type onNewChat should be
   changeSessionID: (id: string) => void;
+  sessionKeys: string[];
 }
-export const Sidebar: React.FC<SidebarProps> = ({ onNewChat, changeSessionID }) => {
+export const Sidebar: React.FC<SidebarProps> = ({ onNewChat, changeSessionID, sessionKeys }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const navigate = useNavigate(); // Hook to navigate programmatically
 
@@ -100,34 +101,20 @@ export const Sidebar: React.FC<SidebarProps> = ({ onNewChat, changeSessionID }) 
           ) : (
             <h1 className="p-2 font-bold">Chat History</h1>
           )}
-          <button
-            onClick={handleNavigateToHome}
-            className="flex items-center p-2 hover:bg-primary-hover focus:bg-primary-focus w-full"
-          >
-            {isCollapsed ? <span>🧘🏻</span> : <span>Hello world! </span>}
-          </button>
-          <button
-            onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
-              if (event.target instanceof HTMLButtonElement) {
-                handleSessionChange(event.target.id);
-              }
-            }}
-            id = "key1"
-            className="flex items-center p-2 hover:bg-primary-hover focus:bg-primary-focus w-full"
-          >
-            {isCollapsed ? <span>🧘🏻</span> : <span>Session 1</span>}
-          </button>
-          <button
-             onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
-              if (event.target instanceof HTMLButtonElement) {
-                handleSessionChange(event.target.id);
-              } 
-            }}
-            id = "key2"
-            className="flex items-center p-2 hover:bg-primary-hover focus:bg-primary-focus w-full"
-          >
-            {isCollapsed ? <span>🧘🏻</span> : <span>Session 2</span>}
-          </button>
+            {sessionKeys.map((key, index) => (
+            <button
+              key={key} // Unique key for each button
+              onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
+                if (event.target instanceof HTMLButtonElement) {
+                  handleSessionChange(event.target.id);
+                }
+              }}
+              id={key} // Use session key as ID
+              className="flex items-center p-2 hover:bg-primary-hover focus:bg-primary-focus w-full"
+            >
+              <span>{`Session ${key}`}</span> {/* Dynamic session name */}
+            </button>
+          ))}
         </div>
       </div>
     </div>
