@@ -25,7 +25,7 @@ Ikuti langkah-langkah berikut untuk menginstal dan menyiapkan proyek di mesin lo
 1. **Clone repositori dari GitHub**:
 
    ```bash
-    git clone <repository-url>
+    git clone https://github.com/LightArtz/CapyNion.git
    ```
 
 2. **Masuk ke direktori proyek:**:
@@ -34,7 +34,7 @@ Ikuti langkah-langkah berikut untuk menginstal dan menyiapkan proyek di mesin lo
    ```
 3. **Install dependencies yang diperlukan**:
    ```bash
-    npm install
+    npm run setup
    ```
 
 ### Executing Program
@@ -49,7 +49,6 @@ Setelah semua dependencies terinstal, Anda bisa menjalankan proyek dengan mengik
 
 2. **Build dan Deploy Canister:**:
    ```bash
-    npm run setup
     npm start
    ```
 
