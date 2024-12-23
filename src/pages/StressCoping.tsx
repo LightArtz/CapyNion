@@ -15,7 +15,7 @@ function StressCoping() {
   };
 
   return (
-    <div className="flex min-h-screen font-hanken-grotesk" style={{ background: 'linear-gradient(to bottom, #003281, #FFC24C)' }}>
+    <div className="flex w-screen min-h-screen font-hanken-grotesk" style={{ background: 'linear-gradient(to bottom, #003281, #FFC24C)' }}>
       <Sidebar onNewChat={() => {}}/>
       <div
         className="flex flex-col items-center z-10 relative w-screen h-screen"
