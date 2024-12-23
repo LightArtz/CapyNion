@@ -1,54 +1,61 @@
-# Vite + React + Motoko
+# CapyNion - Web3 Mental Health Chatbot
 
-### Get started directly in your browser:
+CapyNion adalah chatbot berbasis Web3 yang dirancang untuk membantu pengguna dalam masalah kesehatan mental dengan memberikan dukungan melalui percakapan.
 
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/rvanasa/vite-react-motoko)
+## Description
 
-This template gives you everything you need to build a full-stack Web3 application on the [Internet Computer](https://internetcomputer.org/).
+CapyNion adalah chatbot yang memungkinkan pengguna untuk berbicara dan bertanya tentang masalah kesehatan mental. Didesain untuk memberikan kenyamanan dan dukungan, CapyNion menggunakan teknologi Web3 untuk menyimpan data percakapan secara aman dan terdesentralisasi. Setiap interaksi dengan chatbot disimpan dalam canister yang dikelola menggunakan DFINITY SDK, menjaga privasi dan keamanan data pengguna.
 
-For an example of a real-world dapp built using this starter project, check out the [source code](https://github.com/dfinity/feedback) for DFINITY's [Developer Experience Feedback Board](https://dx.internetcomputer.org/).
+## Getting Started
 
-## 📦 Create a New Project
+### Dependencies
 
-Make sure that [Node.js](https://nodejs.org/en/) `>= 16` and [`dfx`](https://internetcomputer.org/docs/current/developer-docs/build/install-upgrade-remove) `>= 0.14` are installed on your system.
+Sebelum memulai, pastikan Anda memiliki beberapa prasyarat berikut:
 
-Run the following commands in a new, empty project directory:
+- **Ubuntu** atau terminal berbasis Ubuntu
+- **DFINITY SDK**  
+   Ikuti instruksi di [dokumentasi DFINITY](https://sdk.dfinity.org/docs/index.html) untuk menginstal `dfx` (SDK DFINITY).
+- **Node.js dan npm**  
+   Pastikan Node.js dan npm terinstal di komputer Anda. Jika belum, Anda bisa mengunduhnya dari [situs resmi Node.js](https://nodejs.org/).
 
-```sh
-npx degit rvanasa/vite-react-motoko # Download this starter project
-dfx start --clean --background # Run dfx in the background
-npm run setup # Install packages, deploy canisters, and generate type bindings
+### Installing
 
-npm start # Start the development server
-```
+Ikuti langkah-langkah berikut untuk menginstal dan menyiapkan proyek di mesin lokal Anda:
 
-When ready, run `dfx deploy --network ic` to deploy your application to the Internet Computer.
+1. **Clone repositori dari GitHub**:
 
-## 🛠️ Technology Stack
+   ```bash
+    git clone <repository-url>
+   ```
 
-- [Vite](https://vitejs.dev/): high-performance tooling for front-end web development
-- [React](https://reactjs.org/): a component-based UI library
-- [TypeScript](https://www.typescriptlang.org/): JavaScript extended with syntax for types
-- [Sass](https://sass-lang.com/): an extended syntax for CSS stylesheets
-- [Prettier](https://prettier.io/): code formatting for a wide range of supported languages
-- [Motoko](https://github.com/dfinity/motoko#readme): a safe and simple programming language for the Internet Computer
-- [Mops](https://mops.one): an on-chain community package manager for Motoko
-- [mo-dev](https://github.com/dfinity/motoko-dev-server#readme): a live reload development server for Motoko
-- [@ic-reactor](https://github.com/B3Pay/ic-reactor): A suite of JavaScript libraries for seamless frontend development on the Internet Computer
+2. **Masuk ke direktori proyek:**:
+   ```bash
+    cd CapyNion
+   ```
+3. **Install dependencies yang diperlukan**:
+   ```bash
+    npm install
+   ```
 
-## 📚 Documentation
+### Executing Program
 
-- [Vite developer docs](https://vitejs.dev/guide/)
-- [React quick start guide](https://react.dev/learn)
-- [Internet Computer docs](https://internetcomputer.org/docs/current/developer-docs/ic-overview)
-- [`dfx.json` reference schema](https://internetcomputer.org/docs/current/references/dfx-json-reference/)
-- [Motoko developer docs](https://internetcomputer.org/docs/current/developer-docs/build/cdks/motoko-dfinity/motoko/)
-- [Mops usage instructions](https://j4mwm-bqaaa-aaaam-qajbq-cai.ic0.app/#/docs/install)
-- [@ic-reactor/react](https://b3pay.github.io/ic-reactor/modules/react.html)
+Setelah semua dependencies terinstal, Anda bisa menjalankan proyek dengan mengikuti langkah-langkah ini:
 
-## 💡 Tips and Tricks
+1. **Menjalankan Internet Computer (ICP) local network:**:
 
-- Customize your project's code style by editing the `.prettierrc` file and then running `npm run format`.
-- Reduce the latency of update calls by passing the `--emulator` flag to `dfx start`.
-- Install a Motoko package by running `npx ic-mops add <package-name>`. Here is a [list of available packages](https://mops.one/).
-- Split your frontend and backend console output by running `npm run frontend` and `npm run backend` in separate terminals.
+   ```bash
+    dfx start --clean --background
+   ```
+
+2. **Build dan Deploy Canister:**:
+   ```bash
+    npm run setup
+    npm start
+   ```
+
+### Authors
+
+- Ellen Chandra (ellen.chandra001@binus.ac.id)
+- Kelson Vincien (kelson.vincien@gmail.com)
+- Reynard Amadeus Joshua (reynard.joshua4949@gmail.com)
+- Steven Imanuel Lambert (steven.lambert@binus.ac.id)
